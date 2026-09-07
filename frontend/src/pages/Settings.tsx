@@ -524,7 +524,7 @@ export function SettingsPage() {
                     <span className="text-sm text-muted-foreground">Environment</span>
                   </div>
                   <p className="font-mono text-lg font-medium">
-                    {process.env.NODE_ENV === "production" ? "Production" : "Development"}
+                    {import.meta.env.PROD ? "Production" : "Development"}
                   </p>
                 </div>
                 <div className="p-4 bg-muted/30 rounded-lg">
