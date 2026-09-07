@@ -40,8 +40,9 @@ and frontend :5173 running. Full suite must run with no stray
 python/uvicorn processes (kill leftovers first - SQLite contention hangs).
 
 ### Next Action
-Manual production migration per `docs/deployment.md` section 5 (needs Render
-+ Vercel dashboard access). Then Milestone 4: T-040 browser agent scaffold.
+Production deployment is verified live (frontend on Vercel, backend on
+Render, Neon PostgreSQL) and `master` matches the deployment line. Next:
+Milestone 4, T-040 browser agent scaffold.
 
 ---
 

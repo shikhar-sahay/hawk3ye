@@ -1,221 +1,253 @@
 # Hawk3ye
 
-Web application security monitoring platform (SIEM-lite). Hawk3ye ingests security
-events from web applications, normalizes them with MITRE ATT&CK tags, runs 7 detection
-engines, correlates alerts into incidents, and exposes everything through REST APIs,
-a WebSocket stream, and a real-time React dashboard.
+Hawk3ye is a web application security monitoring platform (SIEM-lite). Your
+applications send it JSON security events; it normalizes them with MITRE
+ATT&CK tags, runs 7 detection engines, correlates related alerts into
+incidents, and shows everything on a real-time React dashboard fed by
+WebSocket.
 
-## Current Status
+## Live deployment
 
-| Milestone | Status | Achieved |
-|-----------|--------|----------|
-| 1 — Backend MVP (APIs, detectors, correlation, auth) | ✅ Complete | 2026-07-24 |
-| 2 — Real-time Dashboard Backend (WebSocket) | ✅ Complete | 2026-07-24 |
-| 3 — Frontend Dashboard (React + TypeScript + Vite) | ✅ Complete | 2026-08-02 |
-| 3.5 — Dashboard Polish + Functionality | ✅ Complete | 2026-08-24 |
-| 4 — Browser Security Agent (Chrome MV3) | 🟢 In progress (scaffold) | — |
-| 5 — SDK Integrations (Flask / FastAPI / Express) | ⏳ Planned | — |
-| 6 — Attack Replay & Docs, packaging, Docker/K8s | ⏳ Planned | — |
+The deployed app is split across three services:
 
-Verified baseline: backend tests 33/33 passing; frontend build, lint, and TypeScript
-checks passing; all SPA routes and the `/api` + `/ws` dev proxy verified against a
-running backend.
+- Frontend (React + Vite SPA): `https://hawk3ye.vercel.app`
+- Backend (FastAPI): `https://hawkeye-api-f01y.onrender.com`
+- Database: Neon PostgreSQL (SQLite is only the local dev default)
 
-Production deployment (verified 2026-09-07): frontend on Vercel
-(`https://hawk3ye.vercel.app`), backend on Render (FastAPI, single worker,
-`https://hawkeye-api-f01y.onrender.com`), database on Neon PostgreSQL via
-asyncpg (SQLite remains the local dev default). Verified: Vercel to Render
-routing, production auth/API keys, PostgreSQL persistence, REST event
-ingestion, WebSocket live event/alert/incident fanout, and the detection to
-alerts to correlated incidents pipeline. Note: the Render backend can
-cold-start after idle; the frontend shows a waking state and connects
-automatically once the backend is healthy.
+Open the frontend URL and sign in on the `/login` page with a source API key
+(see Authentication below). If the backend has been idle, you will see a
+"Hawk3ye is waking up" screen while Render cold-starts it.
+The dashboard loads on its own once the backend answers health checks, and
+the WebSocket connects automatically. Nothing needs a manual refresh.
 
-**User documentation:** see [docs/USER_MANUAL.md](docs/USER_MANUAL.md) for a
-complete setup walkthrough, dashboard guide, search guide, and troubleshooting.
+## How it works
 
-## Architecture
+Every event travels the same pipeline:
 
-```
-┌─────────────┐     ┌──────────────────┐     ┌──────────────┐
-│  Web Apps   │────▶│  Hawk3ye API     │────▶│  PostgreSQL  │
-│  (SDKs)     │     │  (FastAPI)       │     │  (SQLModel)  │
-└─────────────┘     └────────┬─────────┘     └──────────────┘
-                             │
-              ┌──────────────┼──────────────┐
-              ▼              ▼              ▼
-       ┌────────────┐ ┌─────────────┐ ┌────────────┐
-       │ Ingestion  │ │ Detection   │ │ Correlation│
-       │ Service    │ │ Engine (7x) │ │ Engine     │
-       └────────────┘ └─────────────┘ └────────────┘
-              │              │              │
-              ▼              ▼              ▼
-       ┌──────────────────────────────────────────┐
-       │            REST + WebSocket API          │
-       └──────────────────────────────────────────┘
-              │              │              │
-              ▼              ▼              ▼
-       ┌────────────┐ ┌─────────────┐ ┌────────────┐
-       │  Frontend  │ │  Browser    │ │   SDKs     │
-       │  (React)   │ │  Agent      │ │ (Python/JS)│
-       └────────────┘ └─────────────┘ └────────────┘
+1. **Ingest.** Your app POSTs a JSON event to `/api/v1/events` (single) or
+   `/api/v1/events/batch` (up to 1,000 per call), authenticated with a source
+   API key.
+2. **Normalize.** The event is stored and mapped to a common schema, enriched
+   with MITRE ATT&CK tactic and technique tags based on its category.
+3. **Detect.** 7 detection engines score the event against recent history
+   (brute force, credential stuffing, enumeration, bot activity, sensitive
+   actions, session hijacking, API abuse). A triggered rule raises an alert
+   with severity (`critical` / `high` / `medium` / `low`), confidence,
+   evidence, and MITRE tags.
+4. **Correlate.** Related alerts inside the 24-hour correlation window are
+   grouped into an incident with aggregated MITRE tactics and affected
+   users/IPs.
+5. **Broadcast.** Each new event, alert, and incident is pushed over
+   WebSocket, so the dashboard updates live without polling.
+
+The typical user flow:
+
+```text
+Open Hawk3ye
+  -> sign in with a source API key (/login)
+  -> open the dashboard (/dashboard)
+  -> register the monitored app as a source (/sources)
+  -> send security events to the ingestion API
+  -> watch events arrive live (/events)
+  -> detection raises alerts (/alerts)
+  -> related alerts form an incident (/incidents)
+  -> investigate from the alert/incident detail views
 ```
 
-## What Hawk3ye Does
+## Authentication
 
-- Ingests raw security events from applications (single + batch endpoints).
-- Normalizes events and enriches them with MITRE ATT&CK data.
-- Runs 7 detection engines: brute force, credential stuffing, enumeration, bot
-  activity, sensitive actions, session hijacking, API abuse.
-- Correlates alerts into incidents with MITRE aggregation.
-- Broadcasts alerts, incidents, and events over WebSocket.
-- Provides REST APIs for sources, events, alerts, incidents, ingestion, and API keys.
+There are no user accounts. Each monitored application is registered as a
+**source**, and each source has its own **API keys**. A key is both the
+ingestion credential (sent as the `X-API-Key` header) and the dashboard
+login. The login page checks the key against the API; the key is then kept in
+browser localStorage (`hawkeye_api_key`) until you sign out. A key only ever
+sees its own source's events, alerts, and incidents, including over
+WebSocket.
 
-## Repository Layout
+On a fresh instance with an empty database, registration is open so you can
+bootstrap the first credential (see Local development below). Once the first
+source and key exist, creating further sources and keys requires an already
+valid key.
 
-```
-Hawkeye/
-├── hawkeye/                  # FastAPI backend package
-│   ├── main.py               # App entry, lifespan, CORS, health
-│   ├── config.py             # Pydantic Settings (env-configurable)
-│   ├── database.py           # Async SQLModel engine/session
-│   ├── core/                 # Auth + normalization (MITRE mapping)
-│   ├── models/               # SQLModel tables + enums
-│   ├── schemas/              # Request/response models
-│   ├── api/
-│   │   ├── deps.py           # Auth + session dependencies
-│   │   ├── websocket.py      # /ws endpoint + ConnectionManager singleton
-│   │   └── v1/               # REST: ingestion, events, sources, alerts, incidents
-│   └── services/
-│       ├── ingestion_service.py
-│       ├── detection/        # DetectionEngine + 7 detectors
-│       └── correlation/      # CorrelationEngine (time-window grouping)
-├── frontend/                 # React + TypeScript + Vite dashboard
-│   └── src/
-│       ├── api/client.ts     # TanStack Query API client
-│       ├── context/WebSocketContext.tsx  # Single shared WebSocket connection
-│       ├── components/       # ui/, layout/, charts/, pages support components
-│       ├── pages/            # Dashboard, Events, Alerts, Incidents, Sources, Settings
-│       └── types/index.ts    # Types matching backend schemas
-├── browser-agent/            # Chrome MV3 extension scaffold (flat layout)
-├── scripts/                  # seed_demo_data.py, cleanup_test_sources.py
-├── docs/USER_MANUAL.md       # End-user manual (setup, dashboard, search, troubleshooting)
-├── tests/                    # Pytest suite (33 tests)
-├── legacy-v1/                # Archived Flask v1 — reference only, do not modify
-├── alembic/                  # Empty migration scaffold (Milestone 6)
-├── AGENTS.md                 # Developer handbook (primary orientation document)
-├── SESSION.md                # Current active engineering task
-├── TODO.md                   # Engineering backlog
-├── ROADMAP.md                # Milestone details and progress
-└── CHANGELOG.md              # Completed work history
+## Trying it against the deployed backend
+
+You need a source API key from whoever operates the instance. With the key in
+hand:
+
+1. Open `https://hawk3ye.vercel.app/login` and paste the key to sign in.
+2. Send a test event to the backend:
+
+```bash
+curl -X POST https://hawkeye-api-f01y.onrender.com/api/v1/events \
+  -H "X-API-Key: <your-key>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event_type": "login_failed",
+    "user_id": "alice",
+    "ip": "203.0.113.50",
+    "route": "/login",
+    "method": "POST",
+    "status_code": 401,
+    "metadata": {"reason": "bad password"}
+  }'
 ```
 
-## Getting Started
+3. Open the **Live Events** page: the event appears immediately.
+4. To trigger a detection, repeat the same failed login a few times (the
+   brute-force rule fires on repeated failures inside its window). A
+   `brute_force` alert with severity, confidence, evidence, and MITRE tags
+   (`TA0006` Credential Access, `T1110` Brute Force) streams into the
+   **Alerts** page live. When related alerts accumulate, they are grouped
+   into an incident on the **Incidents** page.
 
-### Backend
+## Dashboard pages
+
+- **Dashboard** (`/dashboard`): KPI cards (events, active alerts/incidents,
+  sources, detection rate) plus charts for alerts over time (24h/7d/30d),
+  severity distribution, detection types, MITRE coverage, and events by
+  source. Auto-refreshes and updates live.
+- **Live Events** (`/events`): the normalized event stream with server-side
+  search, filters (category, severity, type, user, IP, route, method), CSV
+  export, pagination, and per-row detail. New events arrive over WebSocket.
+- **Alerts** (`/alerts`): live alert feed plus a filterable table (severity,
+  status, detection type). Clicking an alert opens detail tabs (Overview,
+  Evidence, MITRE, Actions) where you set status (`new`, `processing`,
+  `correlated`, `dismissed`).
+- **Incidents** (`/incidents`): correlated incidents as a timeline plus a
+  table, with detail views showing affected users/IPs, aggregated MITRE
+  data, member alerts, and status workflow (`open` to `closed`).
+- **Sources** (`/sources`): register applications, edit or delete them, and
+  manage their API keys (create, copy once, revoke). Deleting a source
+  removes all of its data.
+- **Settings** (`/settings`): theme (Light / Deep Blue / Pitch Black),
+  notifications, auto-refresh interval, API connection details, WebSocket
+  status and reconnect controls, about info.
+
+The top bar adds global search across events, alerts, incidents, and sources
+(with keyboard navigation and deep links into each detail view), a live
+connection-status pill, a notification bell for critical/high alerts and
+incidents, and the session menu (Profile, Security Settings, Sign Out).
+
+## Detection engines
+
+| Engine | Catches |
+|--------|---------|
+| Brute force | Repeated failed logins against one user |
+| Credential stuffing | Many usernames tried from one IP (breach replay) |
+| Enumeration | 404 scans and user-enumeration patterns |
+| Bot detection | Automation user agents, missing browser headers |
+| Sensitive actions | Privileged actions such as role changes and exports |
+| Session hijacking | One session used from distant locations |
+| API abuse | Request-rate anomalies and endpoint scanning |
+
+Each detector has its own threshold and time window, configurable through
+environment variables (see `.env.example` and `hawkeye/config.py`). Every
+alert keeps the evidence the detector used, so you can judge for yourself
+whether it is a true positive.
+
+## API summary
+
+All endpoints take the `X-API-Key` header, except `/health`, `/`, and the
+first-run bootstrap described above.
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/v1/events` | Ingest a single event |
+| `POST /api/v1/events/batch` | Ingest up to 1,000 events |
+| `GET /api/v1/events/query` | Query events (filters, search) |
+| `GET /api/v1/sources` | List sources |
+| `POST /api/v1/sources` | Register a source |
+| `GET/PATCH/DELETE /api/v1/sources/{id}` | Source detail, update, delete |
+| `GET/POST /api/v1/sources/{id}/api-keys` | List or create API keys |
+| `GET /api/v1/alerts`, `GET /api/v1/alerts/{id}` | List and inspect alerts |
+| `GET /api/v1/alerts/stats`, `/time-series`, `/mitre-coverage` | Alert analytics |
+| `GET /api/v1/incidents`, `GET /api/v1/incidents/{id}` | List and inspect incidents |
+| `GET /api/v1/incidents/stats` | Incident analytics |
+| `/ws` | WebSocket: live events, alerts, incidents |
+
+WebSocket auth, in priority order: `Authorization: Bearer <key>` header,
+`X-API-Key` header, `?api_key=<key>` query param (browsers use the query
+param and connect over WSS). Session-based reconnection replays missed
+messages. Full field-level reference: [docs/USER_MANUAL.md](docs/USER_MANUAL.md#7-rest-api-reference).
+
+## Local development
+
+Requirements: Python 3.11+, Node.js 18+ and npm.
 
 ```bash
 pip install -e ".[dev]"
-uvicorn hawkeye.main:app --reload     # http://localhost:8000 (docs at /docs)
-pytest tests/ -v                      # 33 tests
-```
+uvicorn hawkeye.main:app --reload     # API on http://localhost:8000 (/docs for the OpenAPI UI)
+pytest tests/ -v
 
-SQLite is used by default (`hawkeye.db`, gitignored); PostgreSQL via `DATABASE_URL`
-for production. All settings are environment variables — see `hawkeye/config.py`
-and `.env.example`. Useful scripts:
-
-```bash
-python scripts/seed_demo_data.py         # populate demo sources + 24h of events
-python scripts/cleanup_test_sources.py   # remove empty QA/test sources (dry-run: --dry-run)
-```
-
-### Frontend
-
-```bash
 cd frontend
 npm install
-npm run dev      # http://localhost:5173, proxies /api and /ws to :8000
-npm run build    # tsc --noEmit && vite build
+npm run dev      # dashboard on http://localhost:5173, proxies /api and /ws to :8000
+npm run build    # TypeScript check + production build
 npm run lint
 ```
 
-The frontend expects the backend on port 8000. Sign in on the `/login` page with
-any valid source API key (stored in `localStorage` under `hawkeye_api_key`).
-Use `python ../scripts/seed_demo_data.py` to populate demo data; the demo key
-lives only in that script.
+SQLite (`hawkeye.db`) works with zero configuration; point `DATABASE_URL` at
+PostgreSQL for a production-like setup (see `.env.example` and
+`hawkeye/config.py`). On a fresh database, bootstrap the first credential
+with no key (both calls are open only until the first source / first key
+exists):
 
-## API Summary
+```bash
+curl -X POST http://localhost:8000/api/v1/sources \
+  -H "Content-Type: application/json" \
+  -d '{"name": "My Web App", "description": "Local dev"}'
 
-All endpoints require the `X-API-Key` header except `/health`, `/`, and the first-run bootstrap (`POST /sources` and the first `POST /sources/{id}/api-keys` are open only while zero sources / zero API keys exist).
+curl -X POST http://localhost:8000/api/v1/sources/1/api-keys \
+  -H "Content-Type: application/json" -d '{"name": "dev-key"}'
+```
 
-| Endpoint | Methods | Purpose |
-|----------|---------|---------|
-| `/api/v1/events` | POST | Ingest single event |
-| `/api/v1/events/batch` | POST | Ingest batch of events |
-| `/api/v1/events/query` | GET | Query normalized events (filterable, searchable) |
-| `/api/v1/sources` | GET, POST | List/create sources (searchable) |
-| `/api/v1/sources/{id}` | GET, PATCH, DELETE | Source CRUD |
-| `/api/v1/sources/{id}/api-keys` | GET, POST | List/create API keys |
-| `/api/v1/alerts` | GET | List alerts (filterable, searchable) |
-| `/api/v1/alerts/stats` | GET | Aggregate alert statistics |
-| `/api/v1/alerts/time-series?hours=N` | GET | Time-bucketed alert counts |
-| `/api/v1/alerts/mitre-coverage` | GET | MITRE tactic/technique coverage |
-| `/api/v1/alerts/{id}` | GET, PATCH | Alert detail / status update |
-| `/api/v1/incidents` | GET | List incidents (filterable, searchable) |
-| `/api/v1/incidents/stats` | GET | Aggregate incident statistics |
-| `/api/v1/incidents/{id}` | GET, PATCH | Incident detail / status update |
-| `/ws` | WebSocket | Live alerts/incidents/events |
+The plain key is shown once. Paste it at `/login` and send events as shown
+above against `http://localhost:8000`. To fill an empty dashboard quickly:
 
-WebSocket auth priority: `Authorization: Bearer <key>` header → `X-API-Key` header →
-`?api_key=<key>` query param. Session-based reconnection supported via
-`{"type": "reconnect", "data": {"session_id": "...", "last_event_id": N}}`.
+```bash
+python scripts/seed_demo_data.py         # demo sources + 24h of events (dev only)
+python scripts/cleanup_test_sources.py   # remove empty QA sources (--dry-run supported)
+```
 
-## Frontend Notes
+Never run the seed script against production: it installs a publicly known
+demo key and junk data (it refuses with `ENVIRONMENT=production` unless
+forced). Run only one backend instance locally: two processes on the same
+SQLite file cause lock contention.
 
-- **Single shared WebSocket:** one `WebSocketProvider` lives in `AppLayout`;
-  TopNav, Events, Alerts, and Incidents consume it via `WebSocketContext`.
-  Do not create additional WebSocket connections in pages or components.
-- **Refresh buttons** use TanStack Query's `isFetching` (not `isLoading`) so they
-  correctly show spinner/disabled state during refetches.
-- **Global search** in TopNav queries events/alerts/incidents/sources in parallel
-  using backend `search` query params (250 ms debounce, stale-response guard),
-  with match highlighting, loading/error/empty states, keyboard navigation,
-  and a dedicated mobile search panel below the `sm` breakpoint.
-- **Notification bell** shows high-severity (critical/high) alerts and incidents
-  received over the shared WebSocket.
-- **Responsive layout:** the header spans the full main area and tracks the
-  sidebar state; tables scroll inside their own card containers so the page
-  itself never overflows horizontally; dialogs are viewport-constrained and
-  scroll internally.
+## Architecture
 
-## Deployment
+```text
+Web apps (or curl/scripts)
+  -> FastAPI backend: ingestion -> normalization (+MITRE) -> detection (7x) -> correlation
+  -> PostgreSQL (SQLModel, asyncpg in production)
+  -> REST (/api/v1) + WebSocket (/ws) -> React dashboard (Vercel)
+```
 
-The v2 application deploys as a **split frontend/backend**:
+The backend must run as a single worker: WebSocket connections, sessions,
+and broadcast fan-out live in process memory, so horizontal scaling needs a
+Redis-backed connection manager first (a known future step, not built yet).
+It also cannot run on serverless: `/ws` is a long-lived connection.
 
-- **Frontend (React SPA)** → **Vercel** (`frontend/vercel.json`; set the
-  project's Root Directory to `frontend`). Configure `VITE_API_BASE_URL` and
-  `VITE_WS_URL` to point at the backend origin.
-- **Backend (FastAPI + WebSocket)** → a persistent single-instance runtime,
-  e.g. **Render** (`render.yaml` blueprint) or any container host
-  (`Dockerfile`). It cannot run on Vercel serverless: `/ws` is a long-lived
-  WebSocket and connection/session state is in-process (single worker
-  required).
-- **Database** → PostgreSQL in production via `DATABASE_URL`
-  (`postgresql+asyncpg://...`); SQLite remains the zero-config dev default.
+Full infrastructure detail, environment variables, and the verification
+checklist: [docs/deployment.md](docs/deployment.md). End-user walkthrough,
+dashboard guide, search, and troubleshooting:
+[docs/USER_MANUAL.md](docs/USER_MANUAL.md).
 
-The legacy Flask v1 app (`legacy-v1/`, formerly deployed as
-`hawkeye-i1bt.onrender.com`) is archived: see `legacy-v1/README.md` and the
-`legacy-v1-flask` git tag. Full audit, environment variables, and the
-step-by-step migration/cutover procedure: **[docs/deployment.md](docs/deployment.md)**.
+The old Flask v1 prototype (`legacy-v1/`) is archived for reference only;
+see `legacy-v1/README.md` and the `legacy-v1-flask` tag.
 
-## Development Workflow
+## Limitations
 
-1. Read `AGENTS.md` (handbook) and `SESSION.md` (current task).
-2. Work one task at a time from `TODO.md`.
-3. Verify: `pytest tests/ -v`, frontend `npm run build` + `npm run lint`.
-4. Update docs (`SESSION.md` → `TODO.md` → `CHANGELOG.md` → `ROADMAP.md`) when work lands.
-5. Commit changes in small, logical groups.
+- The Render backend sleeps after idle and cold-starts on the next request;
+  the frontend covers this with its waking screen and connects automatically
+  once the backend is healthy.
+- One backend worker only: do not scale horizontally until WebSocket state
+  moves out of process.
+- API keys are per-source by design: there is no cross-source view and no
+  user/role management.
+- The Chrome extension (browser agent) and framework SDKs are planned work,
+  not available yet. Application events are sent through the REST API.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT License, see [LICENSE](LICENSE).
