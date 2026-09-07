@@ -1,10 +1,14 @@
 # Hawk3ye Deployment Guide
 
 This document describes the current deployment architecture, the audit that
-shaped it, and the exact steps to move production from the legacy Render
-deployment to the new split deployment (frontend on Vercel, backend on
-Render). Nothing in this document claims a completed deployment: steps that
-require dashboard/DNS access are explicitly listed as manual.
+shaped it, and the steps used to move production from the legacy Render
+deployment to the split deployment (frontend on Vercel, backend on Render).
+
+Current production (verified 2026-09-07): frontend
+`https://hawk3ye.vercel.app`, backend
+`https://hawkeye-api-f01y.onrender.com` (FastAPI, single worker), database
+Neon PostgreSQL via asyncpg. The procedure below is kept as reference; steps
+that require dashboard/DNS access are explicitly listed as manual.
 
 ---
 
@@ -28,8 +32,7 @@ require dashboard/DNS access are explicitly listed as manual.
   (`render.yaml` blueprint at the repo root; `Dockerfile` provided as a
   portable alternative).
 - **Database**: SQLite by default (`./hawkeye.db`, needs a persistent disk);
-  PostgreSQL via `DATABASE_URL=postgresql+asyncpg://...` for production
-  (Render Postgres or managed provider).
+  Neon PostgreSQL via `DATABASE_URL=postgresql+asyncpg://...` for production.
 - **Communication**: the frontend calls `${VITE_API_BASE_URL}/api/v1/*` and
   connects to `${VITE_WS_URL}/ws`. Both default to same-origin (empty env
   var) for reverse-proxy setups; in the split deployment they point at the
@@ -98,13 +101,13 @@ Both default to empty (same origin) - see `frontend/.env.production.example`.
 
 ### 5.1 Backend on Render
 1. Render dashboard → **New → Blueprint** → select this repository. Render
-   reads `render.yaml`; set `DATABASE_URL` (Render Postgres → use its
-   *Internal Database URL*, replacing `postgres://` with
-   `postgresql+asyncpg://`) and `CORS_ORIGINS` when prompted.
-   Use plan **Starter or higher**: the free tier sleeps on inactivity, which
-   drops all WebSocket connections, wipes in-memory session/replay state, and
-   delays ingestion until the next cold start. WebSockets require a service
-   that never sleeps.
+   reads `render.yaml`; set `DATABASE_URL` (Neon pooled URL with the
+   `postgresql+asyncpg://` scheme; see `hawkeye/database.py` for pooled-URL
+   handling) and `CORS_ORIGINS` when prompted.
+   Keep `--workers 1` (in-memory WebSocket state). Note: on a sleeping tier
+   the backend cold-starts after idle, which drops WebSocket connections and
+   wipes in-memory session/replay state; the frontend shows a waking state
+   and reconnects once `/health` is healthy (see step 2).
 2. Deploy, then verify:
    - `GET https://<backend>/health` → `{"status": "healthy"}`
    - `GET https://<backend>/docs` → should be **404** (production mode)
@@ -209,4 +212,4 @@ The tag is pushed to GitHub; `legacy-v1/` also remains on `master` as an
 in-tree archive until the migration is verified.
 
 ---
-*Last deployment trigger: 2026-05-14 — deploy/vercel-render branch pushed to trigger connected Vercel project.*
+*Production status: deployed and verified 2026-09-07 (frontend `https://hawk3ye.vercel.app`, backend `https://hawkeye-api-f01y.onrender.com`, Neon PostgreSQL).*

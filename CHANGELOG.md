@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - Hawk3ye production deployment (Vercel + Render + Neon) (2026-09-07)
+
+### Deployed
+- **Hawk3ye branding** applied across backend, frontend, docs, and
+  browser-agent scaffold.
+- **Frontend on Vercel** (React/Vite SPA): `https://hawk3ye.vercel.app`.
+- **Backend on Render** (FastAPI, single worker):
+  `https://hawkeye-api-f01y.onrender.com`.
+- **Production database**: Neon PostgreSQL via `asyncpg`.
+
+### Verified live
+- Vercel → Render routing and production authentication/API keys.
+- PostgreSQL persistence and REST event ingestion.
+- WebSocket connection plus live event/alert/incident fanout with no page
+  refresh.
+- Detection → alerts → correlated incidents pipeline.
+- Render cold-start/waking UX (waking screen, health polling, login banner,
+  deferred WebSocket connect).
+
+### Fixed for production
+- PostgreSQL/`asyncpg` compatibility: Neon pooled-URL
+  `sslmode`/`channel_binding` handling, incident JSON filter `CAST`s, declared
+  `asyncpg` dependency.
+- WebSocket live delivery: subscription routing and `created_at` mapping with
+  regression tests (see entries below).
+
+---
+
 ## [Unreleased] - Live WebSocket event delivery fix (2026-09-05)
 
 ### Fixed

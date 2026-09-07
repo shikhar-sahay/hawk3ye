@@ -145,7 +145,7 @@ Hawkeye/
 ## 3. Current Architecture (Implemented)
 
 - **Framework:** FastAPI (async, Python 3.11+)
-- **Database:** SQLModel + SQLAlchemy 2.0 async — SQLite for dev, PostgreSQL for prod
+- **Database:** SQLModel + SQLAlchemy 2.0 async (SQLite for dev, Neon PostgreSQL via asyncpg for prod)
 - **Auth:** API keys with bcrypt hashing, X-API-Key header
 - **Ingestion:** Single + batch endpoints → normalization → persistence → detection
 - **Detection Engine:** `DetectionEngine.process_event()` runs 7 detectors sequentially:
@@ -161,6 +161,7 @@ Hawkeye/
 - **WebSocket API:** `/ws` with multi-method auth, subscriptions, heartbeat, reconnection
 - **Frontend:** React + TypeScript + Vite (Milestones 3 & 3.5 — complete)
 - **Browser Agent:** Chrome MV3 extension scaffold (flat layout), Milestone 4 in progress
+- **Production:** frontend on Vercel (`https://hawk3ye.vercel.app`), backend on Render as a single worker (`https://hawkeye-api-f01y.onrender.com`). Render cold starts are possible; the frontend shows a waking state and connects once the backend is healthy.
 
 ---
 

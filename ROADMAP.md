@@ -98,6 +98,20 @@ Build a production-ready Web Application Security Monitoring Platform (SIEM-lite
 
 ---
 
+### Production Deployment (Vercel + Render + Neon): DEPLOYED (2026-09-07)
+- Frontend on Vercel (React/Vite SPA): `https://hawk3ye.vercel.app`
+- Backend on Render (FastAPI, single worker): `https://hawkeye-api-f01y.onrender.com`
+- Production database: Neon PostgreSQL (asyncpg driver)
+- Verified live: Vercel → Render routing, production authentication/API keys,
+  PostgreSQL persistence, REST event ingestion, WebSocket connection + live
+  event/alert/incident fanout (no page refresh), detection → alerts →
+  correlated incidents, Render cold-start/waking UX
+- Production fixes included: PostgreSQL/asyncpg compatibility (Neon pooled-URL
+  sslmode/channel_binding handling, JSON filter CASTs, asyncpg dependency),
+  WebSocket live-delivery fix (subscription routing + `created_at` mapping)
+
+---
+
 ### Milestone 4: Browser Security Agent
 **Target: TBD (after Milestone 3)**  
 **Status: 🟢 IN PROGRESS — 0% (T-040: Chrome MV3 Extension Scaffold starting)**
@@ -140,8 +154,9 @@ Build a production-ready Web Application Security Monitoring Platform (SIEM-lite
 
 ## Current Status
 
-**Active Milestone: Milestone 4 - Browser Security Agent**  
+**Active Milestone: Milestone 4 - Browser Security Agent**
 **Progress: 0% (Starting T-040: Chrome MV3 Extension Scaffold)**
+**Production: DEPLOYED (2026-09-07) - Vercel frontend + Render backend + Neon PostgreSQL (see Production Deployment above)**
 
 Milestone 3 (Frontend Dashboard) is 100% complete — all 6 pages implemented, connected to real backend, real-time WebSocket, code-split charts.
 

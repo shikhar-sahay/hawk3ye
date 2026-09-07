@@ -21,6 +21,16 @@ Verified baseline: backend tests 33/33 passing; frontend build, lint, and TypeSc
 checks passing; all SPA routes and the `/api` + `/ws` dev proxy verified against a
 running backend.
 
+Production deployment (verified 2026-09-07): frontend on Vercel
+(`https://hawk3ye.vercel.app`), backend on Render (FastAPI, single worker,
+`https://hawkeye-api-f01y.onrender.com`), database on Neon PostgreSQL via
+asyncpg (SQLite remains the local dev default). Verified: Vercel to Render
+routing, production auth/API keys, PostgreSQL persistence, REST event
+ingestion, WebSocket live event/alert/incident fanout, and the detection to
+alerts to correlated incidents pipeline. Note: the Render backend can
+cold-start after idle; the frontend shows a waking state and connects
+automatically once the backend is healthy.
+
 **User documentation:** see [docs/USER_MANUAL.md](docs/USER_MANUAL.md) for a
 complete setup walkthrough, dashboard guide, search guide, and troubleshooting.
 
