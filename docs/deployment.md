@@ -207,3 +207,6 @@ git checkout legacy-v1-flask -- legacy-v1/           # restore the directory
 
 The tag is pushed to GitHub; `legacy-v1/` also remains on `master` as an
 in-tree archive until the migration is verified.
+
+---
+*Last deployment trigger: 2026-05-14 — deploy/vercel-render branch pushed to trigger connected Vercel project.*
