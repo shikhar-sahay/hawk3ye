@@ -10,13 +10,13 @@ import { Logo } from "@/components/ui/logo";
 import { useRouteMeta } from "@/hooks/useRouteMeta";
 
 /**
- * NotFoundPage - branded Hawkeye 404. The hawk reports what it observed:
+ * NotFoundPage - branded Hawk3ye 404. The hawk reports what it observed:
  * this route does not exist.
  */
 export function NotFoundPage() {
   useRouteMeta(
     "Page not found",
-    "This route does not exist on this Hawkeye deployment."
+    "This route does not exist on this Hawk3ye deployment."
   );
 
   // Ensure a 404-ish feel for client-side navigation history
@@ -54,7 +54,7 @@ export function NotFoundPage() {
             The hawk found nothing here
           </h1>
           <p className="mx-auto mt-3 max-w-md leading-relaxed text-muted-foreground">
-            This route doesn't exist on this Hawkeye deployment: no events, no
+            This route doesn't exist on this Hawk3ye deployment: no events, no
             alerts, no page. Whatever you're looking for may have moved, or the
             URL may have a typo.
           </p>

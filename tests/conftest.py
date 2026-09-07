@@ -1,4 +1,4 @@
-"""Pytest configuration and fixtures for HawkEye tests."""
+"""Pytest configuration and fixtures for Hawk3ye tests."""
 
 import pytest
 from hawkeye.database import db

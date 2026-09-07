@@ -11,7 +11,7 @@ interface HawkLoaderProps {
 }
 
 /**
- * HawkLoader - the Hawkeye loading state. The mark flaps its wings and
+ * HawkLoader - the Hawk3ye loading state. The mark flaps its wings and
  * lifts slightly, with the observation ring pulsing beneath it. Pure CSS;
  * disabled under prefers-reduced-motion (renders as a static mark).
  */

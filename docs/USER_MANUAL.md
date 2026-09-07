@@ -1,6 +1,6 @@
-# Hawkeye User Manual
+# Hawk3ye User Manual
 
-A practical guide to running and using the Hawkeye web application security
+A practical guide to running and using the Hawk3ye web application security
 monitoring platform. This manual describes the software as it is implemented
 in this repository today.
 
@@ -8,7 +8,7 @@ in this repository today.
 
 ## Table of Contents
 
-1. [What Hawkeye Does](#1-what-hawkeye-does)
+1. [What Hawk3ye Does](#1-what-hawk3ye-does)
 2. [Installation and Setup](#2-installation-and-setup)
 3. [First Run: Verify, Configure, Ingest, Detect](#3-first-run-verify-configure-ingest-detect)
 4. [Dashboard Guide](#4-dashboard-guide)
@@ -22,9 +22,9 @@ in this repository today.
 
 ---
 
-## 1. What Hawkeye Does
+## 1. What Hawk3ye Does
 
-Hawkeye is a self-hosted, application-layer SIEM-lite. It watches the security
+Hawk3ye is a self-hosted, application-layer SIEM-lite. It watches the security
 events your web applications emit and turns them into actionable incidents.
 
 **What it monitors:**
@@ -35,7 +35,7 @@ events your web applications emit and turns them into actionable incidents.
 - Client signals (user agents, automation indicators)
 
 **What it consumes:** JSON security events sent to its ingestion API by your
-applications, scripts, or (planned) the Hawkeye browser agent and framework
+applications, scripts, or (planned) the Hawk3ye browser agent and framework
 SDKs.
 
 **What it does with them:**
@@ -523,5 +523,5 @@ are created automatically), then re-seed if desired.
 
 ---
 
-*Hawkeye is MIT-licensed. For developer orientation see `AGENTS.md`, the
+*Hawk3ye is MIT-licensed. For developer orientation see `AGENTS.md`, the
 engineering backlog in `TODO.md`, and the milestone plan in `ROADMAP.md`.*

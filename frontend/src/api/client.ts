@@ -1,5 +1,5 @@
 /**
- * Hawkeye Frontend - API Client
+ * Hawk3ye Frontend - API Client
  * Centralized API client with TanStack Query integration
  */
 
@@ -84,7 +84,7 @@ class ApiClient {
       if (!detail) {
         if ([500, 502, 503, 504].includes(response.status)) {
           detail =
-            "Could not reach the Hawkeye backend. Make sure the server is running, then try again.";
+            "Could not reach the Hawk3ye backend. Make sure the server is running, then try again.";
         } else {
           detail = `Request failed (HTTP ${response.status})`;
         }

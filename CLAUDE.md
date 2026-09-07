@@ -1,4 +1,4 @@
-﻿# HawkEye — Claude Session Instructions
+﻿# Hawk3ye — Claude Session Instructions
 
 This file is a pointer. Do not maintain duplicate content here.
 

@@ -32,10 +32,10 @@ async function initialize(): Promise<void> {
       config = response.payload as AgentConfig;
       isEnabled = true;
       setupListeners();
-      console.log("[HawkEye] DOM Monitor initialized");
+      console.log("[Hawk3ye] DOM Monitor initialized");
     }
   } catch (error) {
-    console.error("[HawkEye] DOM Monitor initialization failed:", error);
+    console.error("[Hawk3ye] DOM Monitor initialization failed:", error);
   }
 }
 
@@ -83,7 +83,7 @@ function handleBackgroundMessage(message: BackgroundToContentMessage): void {
       }
       break;
     case "ERROR":
-      console.error("[HawkEye] Background error:", message.payload.message);
+      console.error("[Hawk3ye] Background error:", message.payload.message);
       break;
   }
 }
@@ -98,7 +98,7 @@ function setupMutationObserver(): void {
     if (!config?.enableDomMonitoring) return;
 
     for (const mutation of mutations) {
-      // Filter out noise (HawkEye's own elements, style changes, etc.)
+      // Filter out noise (Hawk3ye's own elements, style changes, etc.)
       if (shouldIgnoreMutation(mutation)) continue;
 
       const event = createDomMutationEvent(mutation);
@@ -580,7 +580,7 @@ async function flushMutationQueue(): Promise<void> {
   try {
     await chrome.runtime.sendMessage({ type: "BATCH_EVENTS", payload: events });
   } catch (error) {
-    console.error("[HawkEye] Failed to send mutation batch:", error);
+    console.error("[Hawk3ye] Failed to send mutation batch:", error);
     // Re-queue on failure
     mutationQueue.unshift(...events);
   }
@@ -593,7 +593,7 @@ async function sendEventImmediate(event: BrowserEvent): Promise<void> {
   try {
     await chrome.runtime.sendMessage({ type: event.category.toUpperCase() as any, payload: event });
   } catch (error) {
-    console.error("[HawkEye] Failed to send immediate event:", error);
+    console.error("[Hawk3ye] Failed to send immediate event:", error);
   }
 }
 

@@ -1,4 +1,4 @@
-# HawkEye v2 - Session Documentation
+# Hawk3ye v2 - Session Documentation
 
 ## Session Metadata
 - **Date**: 2026-09-05

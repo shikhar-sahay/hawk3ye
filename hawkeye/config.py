@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     )
 
     # Application
-    app_name: str = "Hawkeye"
+    app_name: str = "Hawk3ye"
     app_version: str = "2.0.0"
     environment: Literal["development", "staging", "production"] = "development"
     debug: bool = True

@@ -8,7 +8,7 @@ export const HAWKEYE_THEMES: Array<{
   description: string;
 }> = [
   { value: "light", label: "Light", description: "Cool neutral, white surfaces" },
-  { value: "dark", label: "Deep Blue", description: "Layered slate, the Hawkeye classic" },
+  { value: "dark", label: "Deep Blue", description: "Layered slate, the Hawk3ye classic" },
   { value: "black", label: "Pitch Black", description: "True black, high contrast" },
 ];
 

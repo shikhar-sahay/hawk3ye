@@ -1,5 +1,5 @@
 /**
- * API client for HawkEye backend communication
+ * API client for Hawk3ye backend communication
  * Handles batching, retries, authentication, and offline queue persistence
  */
 
@@ -188,7 +188,7 @@ export class ApiClient {
   }
 
   /**
-   * Send batch to HawkEye backend
+   * Send batch to Hawk3ye backend
    */
   private async sendBatch(batch: BatchedEvents): Promise<IngestionResponse> {
     this.abortController = new AbortController();

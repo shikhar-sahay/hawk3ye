@@ -1,6 +1,6 @@
-# HawkEye
+# Hawk3ye
 
-Web application security monitoring platform (SIEM-lite). HawkEye ingests security
+Web application security monitoring platform (SIEM-lite). Hawk3ye ingests security
 events from web applications, normalizes them with MITRE ATT&CK tags, runs 7 detection
 engines, correlates alerts into incidents, and exposes everything through REST APIs,
 a WebSocket stream, and a real-time React dashboard.
@@ -28,7 +28,7 @@ complete setup walkthrough, dashboard guide, search guide, and troubleshooting.
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌──────────────┐
-│  Web Apps   │────▶│  HawkEye API     │────▶│  PostgreSQL  │
+│  Web Apps   │────▶│  Hawk3ye API     │────▶│  PostgreSQL  │
 │  (SDKs)     │     │  (FastAPI)       │     │  (SQLModel)  │
 └─────────────┘     └────────┬─────────┘     └──────────────┘
                              │
@@ -51,7 +51,7 @@ complete setup walkthrough, dashboard guide, search guide, and troubleshooting.
        └────────────┘ └─────────────┘ └────────────┘
 ```
 
-## What HawkEye Does
+## What Hawk3ye Does
 
 - Ingests raw security events from applications (single + batch endpoints).
 - Normalizes events and enriches them with MITRE ATT&CK data.

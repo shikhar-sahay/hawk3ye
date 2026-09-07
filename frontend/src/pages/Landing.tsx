@@ -17,9 +17,9 @@ import { Reveal } from "@/components/Reveal";
 import { useRouteMeta } from "@/hooks/useRouteMeta";
 
 /**
- * LandingPage - public product page for Hawkeye.
+ * LandingPage - public product page for Hawk3ye.
  *
- * The narrative: Hawkeye watches your application, ingests its security
+ * The narrative: Hawk3ye watches your application, ingests its security
  * events, detects attacks with seven engines, correlates alerts into
  * incidents, and puts them in front of you live. Copy is limited to
  * capabilities the backend actually implements.
@@ -40,7 +40,7 @@ const ingestSnippet = `curl -X POST http://localhost:8000/api/v1/events \\
 export function LandingPage() {
   useRouteMeta(
     "Web Application Security Monitoring",
-    "Hawkeye is a self-hosted security monitoring platform for web applications: ingest security events, detect attacks with seven detection engines, map findings to MITRE ATT&CK, and correlate alerts into live incidents."
+    "Hawk3ye is a self-hosted security monitoring platform for web applications: ingest security events, detect attacks with seven detection engines, map findings to MITRE ATT&CK, and correlate alerts into live incidents."
   );
 
   return (
@@ -96,7 +96,7 @@ export function LandingPage() {
                 className="animate-fade-up mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl"
                 style={{ animationDelay: "160ms" }}
               >
-                Hawkeye watches the security events your application already
+                Hawk3ye watches the security events your application already
                 produces. Every login, request, and session runs through seven
                 detection engines, gets mapped to MITRE ATT&CK, and lands on
                 your dashboard as a live, correlated incident.

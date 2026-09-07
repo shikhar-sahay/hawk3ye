@@ -94,7 +94,7 @@ export function DetectionMatrix() {
             Seven engines, mapped to ATT&CK
           </h2>
             <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
-              These are Hawkeye's actual detection mechanisms with their default
+              These are Hawk3ye's actual detection mechanisms with their default
               triggers. Every alert carries the technique IDs that fired, so
               triage starts with context instead of a raw log line.
             </p>

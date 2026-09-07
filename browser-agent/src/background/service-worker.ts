@@ -1,5 +1,5 @@
 /**
- * HawkEye Browser Agent - Background Service Worker
+ * Hawk3ye Browser Agent - Background Service Worker
  * Handles event batching, API communication, CSP report processing,
  * and message routing between content scripts and the backend
  */
@@ -29,7 +29,7 @@ let config: AgentConfig | null = null;
 // ============================================================================
 
 async function initialize(): Promise<void> {
-  console.log('[HawkEye Background] Initializing...');
+  console.log('[Hawk3ye Background] Initializing...');
 
   // Load stored config
   const stored = await chrome.storage.local.get(STORAGE_KEYS.CONFIG);
@@ -47,7 +47,7 @@ async function initialize(): Promise<void> {
   // Initialize API client
   apiClient = getAPIClient(config);
 
-  console.log('[HawkEye Background] Initialized with config:', {
+  console.log('[Hawk3ye Background] Initialized with config:', {
     apiEndpoint: config.apiEndpoint,
     sourceId: config.sourceId,
     hasApiKey: !!config.apiKey,
@@ -56,7 +56,7 @@ async function initialize(): Promise<void> {
   // Test connection if API key is set
   if (config.apiKey) {
     const healthy = await apiClient.healthCheck();
-    console.log('[HawkEye Background] Health check:', healthy ? 'OK' : 'FAILED');
+    console.log('[Hawk3ye Background] Health check:', healthy ? 'OK' : 'FAILED');
   }
 }
 
@@ -69,7 +69,7 @@ async function handleContentMessage(
   sender: chrome.runtime.MessageSender
 ): Promise<void> {
   if (!apiClient || !config) {
-    console.warn('[HawkEye Background] Not initialized, queueing message');
+    console.warn('[Hawk3ye Background] Not initialized, queueing message');
     return;
   }
 
@@ -144,11 +144,11 @@ async function handleContentMessage(
       default: {
         // TypeScript exhaustiveness check
         const _exhaustive: never = message;
-        console.warn('[HawkEye Background] Unknown message type:', _exhaustive);
+        console.warn('[Hawk3ye Background] Unknown message type:', _exhaustive);
       }
     }
   } catch (error) {
-    console.error('[HawkEye Background] Error handling message:', error);
+    console.error('[Hawk3ye Background] Error handling message:', error);
     sendToContentScript(sender.tab?.id, {
       type: 'ERROR',
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -245,7 +245,7 @@ function sendToContentScript(
   chrome.tabs.sendMessage(tabId, message).catch((err) => {
     // Ignore "Receiving end does not exist" errors - content script not loaded
     if (!err.message.includes('Receiving end does not exist')) {
-      console.warn('[HawkEye Background] Failed to send to content script:', err);
+      console.warn('[Hawk3ye Background] Failed to send to content script:', err);
     }
   });
 }
@@ -278,7 +278,7 @@ chrome.runtime.onMessage.addListener(
 
 // Handle extension installation/update
 chrome.runtime.onInstalled.addListener((details) => {
-  console.log('[HawkEye Background] Extension installed/updated:', details.reason);
+  console.log('[Hawk3ye Background] Extension installed/updated:', details.reason);
 
   if (details.reason === 'install') {
     // Set default config on first install
@@ -312,7 +312,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
         },
       });
 
-      console.log('[HawkEye Background] Config updated:', newConfig);
+      console.log('[Hawk3ye Background] Config updated:', newConfig);
     }
   }
 });
@@ -321,7 +321,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'flush-events' && apiClient) {
     apiClient.flush().catch((err) => {
-      console.error('[HawkEye Background] Scheduled flush failed:', err);
+      console.error('[Hawk3ye Background] Scheduled flush failed:', err);
     });
   }
 });
@@ -345,7 +345,7 @@ chrome.webRequest.onHeadersReceived.addListener(
     if (isCSPReport && config?.enableCSPMonitoring) {
       // The actual report body will be handled by the content script's
       // SecurityPolicyViolationEvent listener, but we can also intercept here
-      console.log('[HawkEye Background] CSP report detected via webRequest');
+      console.log('[Hawk3ye Background] CSP report detected via webRequest');
     }
   },
   { urls: ['<all_urls>'] },
@@ -357,7 +357,7 @@ chrome.webRequest.onHeadersReceived.addListener(
 // ============================================================================
 
 chrome.runtime.onSuspend.addListener(() => {
-  console.log('[HawkEye Background] Suspending, flushing queue...');
+  console.log('[Hawk3ye Background] Suspending, flushing queue...');
   apiClient?.destroy();
 });
 
@@ -366,7 +366,7 @@ chrome.runtime.onSuspend.addListener(() => {
 // ============================================================================
 
 initialize().catch((err) => {
-  console.error('[HawkEye Background] Initialization failed:', err);
+  console.error('[Hawk3ye Background] Initialization failed:', err);
 });
 
 export {};

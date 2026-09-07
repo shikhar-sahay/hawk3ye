@@ -1,5 +1,5 @@
 /**
- * Hawkeye Frontend - Type Definitions
+ * Hawk3ye Frontend - Type Definitions
  * Matches the backend API schemas
  */
 

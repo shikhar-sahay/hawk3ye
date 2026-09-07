@@ -1,4 +1,4 @@
-# HawkEye v2 Changelog
+# Hawk3ye v2 Changelog
 
 All notable changes to this project will be documented in this file.
 

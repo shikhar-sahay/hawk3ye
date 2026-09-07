@@ -1,7 +1,7 @@
 /**
- * Hawkeye Frontend - Authentication helpers
+ * Hawk3ye Frontend - Authentication helpers
  *
- * Hawkeye uses API-key authentication (X-API-Key header). The dashboard is a
+ * Hawk3ye uses API-key authentication (X-API-Key header). The dashboard is a
  * browser app, so the key lives in localStorage after the user signs in on
  * the Login page. No secret is ever baked into the frontend bundle.
  */

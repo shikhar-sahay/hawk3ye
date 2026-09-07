@@ -84,7 +84,7 @@ export function DashboardPreview() {
                     <span className="h-2.5 w-2.5 rounded-full bg-border" aria-hidden="true" />
                     <span className="h-2.5 w-2.5 rounded-full bg-border" aria-hidden="true" />
                     <span className="ml-2 font-mono text-2xs text-muted-foreground">
-                      hawkeye · dashboard
+                      hawk3ye · dashboard
                     </span>
                   </div>
                   <span className="flex items-center gap-1.5 font-mono text-2xs text-success">

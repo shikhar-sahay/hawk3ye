@@ -1,5 +1,5 @@
 /**
- * Shared types between content scripts, background worker, and HawkEye backend
+ * Shared types between content scripts, background worker, and Hawk3ye backend
  * These match the backend schemas in hawkeye/schemas/
  */
 

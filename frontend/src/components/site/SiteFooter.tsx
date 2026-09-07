@@ -14,7 +14,7 @@ export function SiteFooter() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2">
             <Logo size={22} />
-            <span className="font-semibold tracking-tight">Hawkeye</span>
+            <span className="font-semibold tracking-tight">Hawk3ye</span>
           </div>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
             Self-hosted security monitoring for web applications. Ingest events,
@@ -72,7 +72,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-between gap-2 border-t px-4 pt-6 text-xs text-muted-foreground sm:px-6">
-        <span>Hawkeye is released under the MIT license.</span>
+        <span>Hawk3ye is released under the MIT license.</span>
         <span className="font-mono">watch → ingest → detect → correlate → respond</span>
       </div>
     </footer>

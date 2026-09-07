@@ -163,7 +163,7 @@ export function SettingsPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">
-          Configure your Hawkeye dashboard preferences
+          Configure your Hawk3ye dashboard preferences
         </p>
       </div>
 
@@ -300,7 +300,7 @@ export function SettingsPage() {
             <CardHeader>
               <CardTitle>API Connection</CardTitle>
               <CardDescription>
-                The dashboard talks to the Hawkeye backend on the same origin
+                The dashboard talks to the Hawk3ye backend on the same origin
                 (<code className="font-mono text-xs">/api/v1</code>). In development,
                 the Vite dev server proxies requests to the backend.
               </CardDescription>

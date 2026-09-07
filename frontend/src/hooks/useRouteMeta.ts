@@ -9,7 +9,7 @@ export function useDocumentTitle(title: string | undefined) {
   React.useEffect(() => {
     if (!title) return;
     const prev = document.title;
-    document.title = `${title} · Hawkeye`;
+    document.title = `${title} · Hawk3ye`;
     return () => {
       document.title = prev;
     };

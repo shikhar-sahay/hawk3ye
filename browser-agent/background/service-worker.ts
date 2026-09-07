@@ -1,5 +1,5 @@
 /**
- * Background Service Worker for HawkEye Browser Agent
+ * Background Service Worker for Hawk3ye Browser Agent
  * Handles event batching, API communication, configuration management
  */
 
@@ -37,14 +37,14 @@ async function initializeAgent(): Promise<void> {
         for (const event of recoveredEvents) {
           await apiClient.addEvent(event);
         }
-        console.log(`[HawkEye] Recovered ${recoveredEvents.length} queued events`);
+        console.log(`[Hawk3ye] Recovered ${recoveredEvents.length} queued events`);
       }
     }
 
     isInitialized = true;
-    console.log("[HawkEye] Background service worker initialized");
+    console.log("[Hawk3ye] Background service worker initialized");
   } catch (error) {
-    console.error("[HawkEye] Failed to initialize agent:", error);
+    console.error("[Hawk3ye] Failed to initialize agent:", error);
   }
 }
 
@@ -64,7 +64,7 @@ async function broadcastToContentScripts(message: BackgroundToContentMessage): P
       }
     }
   } catch (error) {
-    console.error("[HawkEye] Failed to broadcast to content scripts:", error);
+    console.error("[Hawk3ye] Failed to broadcast to content scripts:", error);
   }
 }
 
@@ -141,7 +141,7 @@ async function handleMessage(
         sendResponse({ type: "ERROR", payload: { message: `Unknown message type: ${(message as any).type}` } });
     }
   } catch (error) {
-    console.error("[HawkEye] Error handling message:", error);
+    console.error("[Hawk3ye] Error handling message:", error);
     sendResponse({ type: "ERROR", payload: { message: error instanceof Error ? error.message : "Unknown error" } });
   }
 }
@@ -196,7 +196,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     try {
       await apiClient.flush();
     } catch (error) {
-      console.error("[HawkEye] Periodic flush failed:", error);
+      console.error("[Hawk3ye] Periodic flush failed:", error);
     }
   }
 });
@@ -205,7 +205,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
  * Handle extension installation/update
  */
 chrome.runtime.onInstalled.addListener(async (details) => {
-  console.log("[HawkEye] Extension installed/updated:", details.reason);
+  console.log("[Hawk3ye] Extension installed/updated:", details.reason);
 
   // Create default config if not exists
   const stored = await chrome.storage.sync.get(null);
@@ -236,7 +236,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
  * Handle browser startup
  */
 chrome.runtime.onStartup.addListener(async () => {
-  console.log("[HawkEye] Browser startup, initializing agent");
+  console.log("[Hawk3ye] Browser startup, initializing agent");
   await initializeAgent();
 });
 

@@ -56,10 +56,10 @@ export function SiteHeader() {
           <Link
             to="/"
             className="flex min-h-[44px] items-center gap-2"
-            aria-label="Hawkeye home"
+            aria-label="Hawk3ye home"
           >
             <Logo size={24} />
-            <span className="text-base font-semibold tracking-tight">Hawkeye</span>
+            <span className="text-base font-semibold tracking-tight">Hawk3ye</span>
           </Link>
 
           <nav className="hidden items-center gap-1 text-sm text-muted-foreground md:flex" aria-label="Site">
@@ -128,7 +128,7 @@ export function SiteHeader() {
           <div className="flex h-14 items-center justify-between border-b px-4">
             <span className="flex items-center gap-2 text-base font-semibold tracking-tight">
               <Logo size={20} />
-              Hawkeye
+              Hawk3ye
             </span>
             <Button
               ref={closeButtonRef}

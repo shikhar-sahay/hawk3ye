@@ -36,7 +36,7 @@ const incidentJson = `{
 /**
  * EventStory - "what actually happens to your telemetry": a raw event is
  * scored by the engines, becomes an alert with ATT&CK context, and is
- * correlated into an incident. Uses the real field names from Hawkeye's
+ * correlated into an incident. Uses the real field names from Hawk3ye's
  * schemas.
  */
 export function EventStory() {
@@ -52,7 +52,7 @@ export function EventStory() {
           </h2>
           <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
             Follow one event through the pipeline. Field names below are the
-            real ones: this is the actual shape of Hawkeye's data, not a mockup.
+            real ones: this is the actual shape of Hawk3ye's data, not a mockup.
           </p>
         </Reveal>
 

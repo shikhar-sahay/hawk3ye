@@ -14,16 +14,16 @@ import { useBackendReadiness } from "@/context/BackendReadinessContext";
 import { useRouteMeta } from "@/hooks/useRouteMeta";
 
 /**
- * LoginPage - API key sign-in for the Hawkeye dashboard.
+ * LoginPage - API key sign-in for the Hawk3ye dashboard.
  *
- * Hawkeye authenticates sources with API keys rather than usernames and
+ * Hawk3ye authenticates sources with API keys rather than usernames and
  * passwords. A dashboard user signs in with an active source API key
  * (created on the Sources page or via the backend API on a fresh install).
  */
 export function LoginPage() {
   useRouteMeta(
     "Sign in",
-    "Sign in to your Hawkeye dashboard with a source API key."
+    "Sign in to your Hawk3ye dashboard with a source API key."
   );
   const navigate = useNavigate();
   const location = useLocation() as { state?: { from?: string; message?: string } };
@@ -70,7 +70,7 @@ export function LoginPage() {
         // Backend unreachable (directly or via a dev-proxy 5xx). This is not
         // an auth problem - keep the entered key and explain what to do.
         setError(
-          "Could not reach the Hawkeye backend. Make sure the backend is reachable, then try again."
+          "Could not reach the Hawk3ye backend. Make sure the backend is reachable, then try again."
         );
         setStoredApiKey(key);
       } else {
@@ -100,9 +100,9 @@ export function LoginPage() {
       {/* Top bar */}
       <header className="relative z-10 border-b border-border/60">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" className="flex items-center gap-2" aria-label="Back to Hawkeye home">
+          <Link to="/" className="flex items-center gap-2" aria-label="Back to Hawk3ye home">
             <Logo size={24} />
-            <span className="text-base font-semibold tracking-tight">Hawkeye</span>
+            <span className="text-base font-semibold tracking-tight">Hawk3ye</span>
           </Link>
           <Link
             to="/"

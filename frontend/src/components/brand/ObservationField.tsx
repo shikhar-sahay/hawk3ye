@@ -8,7 +8,7 @@ interface ObservationFieldProps {
 }
 
 /**
- * ObservationField - the Hawkeye hero visual.
+ * ObservationField - the Hawk3ye hero visual.
  *
  * The hawk sits at the center of concentric observation rings. A slow
  * radar sweep rotates around it; telemetry signals (blips) appear on the

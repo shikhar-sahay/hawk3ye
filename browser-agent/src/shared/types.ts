@@ -1,5 +1,5 @@
 /**
- * Shared TypeScript types for HawkEye Browser Agent
+ * Shared TypeScript types for Hawk3ye Browser Agent
  * These types mirror the backend schemas in hawkeye/schemas/events.py
  */
 

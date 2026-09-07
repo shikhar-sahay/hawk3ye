@@ -1,6 +1,6 @@
 /**
- * API Client for HawkEye Browser Agent
- * Handles HTTP communication with the HawkEye backend
+ * API Client for Hawk3ye Browser Agent
+ * Handles HTTP communication with the Hawk3ye backend
  */
 
 import type {
@@ -226,7 +226,7 @@ export class APIClient {
     const retryable = batch.filter((b) => b.retries < maxRetries);
 
     if (retryable.length === 0) {
-      console.warn('[HawkEye] Max retries exceeded, dropping events:', batch.length);
+      console.warn('[Hawk3ye] Max retries exceeded, dropping events:', batch.length);
       return;
     }
 
@@ -300,7 +300,7 @@ export class APIClient {
     this.flushTimer = window.setInterval(() => {
       if (this.eventQueue.length > 0 && this.isOnline) {
         this.flush().catch((err) => {
-          console.error('[HawkEye] Flush failed:', err);
+          console.error('[Hawk3ye] Flush failed:', err);
         });
       }
     }, this.config.flushIntervalMs);
@@ -324,13 +324,13 @@ export class APIClient {
   private setupOnlineListener(): void {
     window.addEventListener('online', () => {
       this.isOnline = true;
-      console.log('[HawkEye] Back online, flushing queue');
-      this.flush().catch((err) => console.error('[HawkEye] Online flush failed:', err));
+      console.log('[Hawk3ye] Back online, flushing queue');
+      this.flush().catch((err) => console.error('[Hawk3ye] Online flush failed:', err));
     });
 
     window.addEventListener('offline', () => {
       this.isOnline = false;
-      console.log('[HawkEye] Gone offline, queueing events');
+      console.log('[Hawk3ye] Gone offline, queueing events');
     });
 
     // Check initial state

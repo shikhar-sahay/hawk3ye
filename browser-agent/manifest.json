@@ -1,7 +1,7 @@
 {
-  "name": "HawkEye Browser Security Agent",
+  "name": "Hawk3ye Browser Security Agent",
   "version": "0.1.0",
-  "description": "Client-side security telemetry for HawkEye - DOM monitoring, CSP violation detection, bot detection",
+  "description": "Client-side security telemetry for Hawk3ye - DOM monitoring, CSP violation detection, bot detection",
   "manifest_version": 3,
   "minimum_chrome_version": "115",
   "icons": {
@@ -49,7 +49,7 @@
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "action": {
-    "default_title": "HawkEye Browser Agent",
+    "default_title": "Hawk3ye Browser Agent",
     "default_popup": "popup.html"
   },
   "options_page": "options.html"

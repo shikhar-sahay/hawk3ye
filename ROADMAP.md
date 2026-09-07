@@ -1,4 +1,4 @@
-# HawkEye v2 Roadmap
+# Hawk3ye v2 Roadmap
 
 ## Overall Project Goal
 Build a production-ready Web Application Security Monitoring Platform (SIEM-lite) with real-time dashboard, WebSocket updates, browser security agent, and SDK integrations.
@@ -107,7 +107,7 @@ Build a production-ready Web Application Security Monitoring Platform (SIEM-lite
 - CSP violation detection & reporting
 - DOM integrity monitoring
 - Bot/automation detection
-- Event batching & batch send to HawkEye API
+- Event batching & batch send to Hawk3ye API
 - CSP reporting endpoint integration
 
 ---

@@ -1,12 +1,12 @@
-# HawkEye v2 — Developer Handbook
+# Hawk3ye v2 — Developer Handbook
 
-This is the definitive operating manual for all Codex sessions working on HawkEye. A brand new session with zero prior context should be able to read **only this file and SESSION.md** and immediately continue productive development.
+This is the definitive operating manual for all Codex sessions working on Hawk3ye. A brand new session with zero prior context should be able to read **only this file and SESSION.md** and immediately continue productive development.
 
 ---
 
 ## 1. Project Overview
 
-**What HawkEye is:** A web application security monitoring platform (SIEM-lite) that ingests security events from web applications, normalizes them with MITRE ATT&CK tags, runs 7 detection engines, correlates alerts into incidents, and exposes everything via REST APIs + WebSocket.
+**What Hawk3ye is:** A web application security monitoring platform (SIEM-lite) that ingests security events from web applications, normalizes them with MITRE ATT&CK tags, runs 7 detection engines, correlates alerts into incidents, and exposes everything via REST APIs + WebSocket.
 
 **Final Vision:** A production-ready, self-hostable security monitoring stack with:
 - Real-time alert/incident dashboard (WebSocket + React)
@@ -20,7 +20,7 @@ This is the definitive operating manual for all Codex sessions working on HawkEy
 **Overall Architecture:**
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌──────────────┐
-│  Web Apps   │────▶│  HawkEye API     │────▶│  PostgreSQL  │
+│  Web Apps   │────▶│  Hawk3ye API     │────▶│  PostgreSQL  │
 │  (SDKs)     │     │  (FastAPI)       │     │  (SQLModel)  │
 └─────────────┘     └────────┬─────────┘     └──────────────┘
                              │
@@ -281,7 +281,7 @@ SDK Integrations — Flask, FastAPI, Express middleware + framework-agnostic cli
 
 ## 10. Future Vision
 
-HawkEye becomes a **production-ready web application security monitoring platform** providing:
+Hawk3ye becomes a **production-ready web application security monitoring platform** providing:
 
 - **Real-time security monitoring** — Ingest, normalize, detect, correlate, alert
 - **Browser telemetry** — Chrome extension captures CSP violations, DOM integrity, automation signals
@@ -449,7 +449,7 @@ When a task changes the frontend UI or user-facing behavior, verify the running 
 
 ---	
 
-#### HawkEye Browser Target
+#### Hawk3ye Browser Target
 
 - Frontend directory: `frontend/`
 - Dev server command: `npm run dev`

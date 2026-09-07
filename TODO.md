@@ -1,4 +1,4 @@
-# HawkEye v2 Engineering Backlog
+# Hawk3ye v2 Engineering Backlog
 
 ## Task Format
 Each task has:
@@ -386,8 +386,8 @@ Each task has:
   - `background/service-worker.ts` — Event batching, API communication, CSP report handling
   - `content/dom-monitor.ts` — DOM mutation observer, CSP violation listener, DOM integrity checks
   - `content/bot-detector.ts` — Client-side bot/automation detection
-  - `shared/types.ts` — Event schemas matching HawkEye backend (RawEvent, NormalizedEvent, etc.)
-  - `shared/api-client.ts` — HTTP client for HawkEye REST API + WebSocket
+  - `shared/types.ts` — Event schemas matching Hawk3ye backend (RawEvent, NormalizedEvent, etc.)
+  - `shared/api-client.ts` — HTTP client for Hawk3ye REST API + WebSocket
   - `vite.config.ts` — Build config for extension (multiple entry points)
   - `package.json` — Dependencies and build scripts
   - Extension loads in Chrome without errors
@@ -416,7 +416,7 @@ Each task has:
   - Listen for `securitypolicyviolation` events on document
   - Extract violation details: directive, blocked URI, violated directive, source file, line/column
   - Report to background script for batching
-  - Background forwards to HawkEye `/api/v1/events/ingest` with `category: "csp_violation"`
+  - Background forwards to Hawk3ye `/api/v1/events/ingest` with `category: "csp_violation"`
   - Handle report-only vs enforce mode
 - **Estimated Effort**: 2-3 hours
 
@@ -451,7 +451,7 @@ Each task has:
   - Configurable batch size (default 50) and flush interval (default 30s)
   - Retry logic with exponential backoff (max 3 retries)
   - Offline queue persistence — flush when connectivity restored
-  - Send to HawkEye `/api/v1/events/ingest/batch` with API key auth
+  - Send to Hawk3ye `/api/v1/events/ingest/batch` with API key auth
   - Handle 429/5xx responses gracefully
 - **Estimated Effort**: 3-4 hours
 

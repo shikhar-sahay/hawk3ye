@@ -1,5 +1,5 @@
 /**
- * HawkEye Browser Agent - DOM Mutation Monitor Content Script
+ * Hawk3ye Browser Agent - DOM Mutation Monitor Content Script
  * Monitors DOM changes, CSP violations, and DOM integrity
  */
 
@@ -48,7 +48,7 @@ async function initialize(): Promise<void> {
       config = { ...config, ...response.config };
     }
   } catch {
-    console.warn('[HawkEye Content] Failed to get config from background');
+    console.warn('[Hawk3ye Content] Failed to get config from background');
   }
 
   // Set up CSP violation listener
@@ -73,7 +73,7 @@ async function initialize(): Promise<void> {
   });
 
   isInitialized = true;
-  console.log('[HawkEye Content] Initialized', { url: window.location.href });
+  console.log('[Hawk3ye Content] Initialized', { url: window.location.href });
 }
 
 // ============================================================================
@@ -106,7 +106,7 @@ function setupCSPListener(): void {
     });
   });
 
-  console.log('[HawkEye Content] CSP violation listener registered');
+  console.log('[Hawk3ye Content] CSP violation listener registered');
 }
 
 // ============================================================================
@@ -147,7 +147,7 @@ function setupMutationObserver(): void {
     characterDataOldValue: true,
   });
 
-  console.log('[HawkEye Content] MutationObserver registered');
+  console.log('[Hawk3ye Content] MutationObserver registered');
 }
 
 function getElementSelector(element: Node): string {
@@ -252,7 +252,7 @@ async function captureIntegrityBaselines(): Promise<void> {
     Array.from(integrityBaselines.entries())
   ));
 
-  console.log('[HawkEye Content] Captured integrity baselines for', integrityBaselines.size, 'elements');
+  console.log('[Hawk3ye Content] Captured integrity baselines for', integrityBaselines.size, 'elements');
 }
 
 function getElementKey(element: Element): string {
@@ -323,7 +323,7 @@ function startIntegrityChecks(): void {
     await checkIntegrity();
   }, interval);
 
-  console.log('[HawkEye Content] Integrity checks started, interval:', interval);
+  console.log('[Hawk3ye Content] Integrity checks started, interval:', interval);
 }
 
 async function checkIntegrity(): Promise<void> {
@@ -386,7 +386,7 @@ function sendToBackground(message: ContentToBackgroundMessage): Promise<Backgrou
       if (chrome.runtime.lastError) {
         // Ignore "Receiving end does not exist" - background might not be ready
         if (!chrome.runtime.lastError.message.includes('Receiving end does not exist')) {
-          console.warn('[HawkEye Content] Message error:', chrome.runtime.lastError.message);
+          console.warn('[Hawk3ye Content] Message error:', chrome.runtime.lastError.message);
         }
         resolve();
       } else {
@@ -402,7 +402,7 @@ chrome.runtime.onMessage.addListener(
     switch (message.type) {
       case 'CONFIG_UPDATE':
         config = { ...config, ...message.config };
-        console.log('[HawkEye Content] Config updated:', message.config);
+        console.log('[Hawk3ye Content] Config updated:', message.config);
         sendResponse({ success: true });
         break;
 

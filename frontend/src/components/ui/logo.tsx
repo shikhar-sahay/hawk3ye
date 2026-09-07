@@ -11,8 +11,8 @@ interface LogoProps {
 }
 
 /**
- * Logo - the single canonical Hawkeye mark (frontend/public/hawkeyelogo.png).
- * All Hawkeye branding across the site must use this component; do not
+ * Logo - the single canonical Hawk3ye mark (frontend/public/hawkeyelogo.png).
+ * All Hawk3ye branding across the site must use this component; do not
  * introduce alternate hawk graphics.
  */
 export function Logo({ className, size = 32, animated = false }: LogoProps) {
@@ -36,7 +36,7 @@ export function LogoWithText({ className, size = 32 }: LogoProps) {
   return (
     <span className={cn("flex items-center gap-2", className)}>
       <Logo size={size} />
-      <span className="text-xl font-bold tracking-tight text-foreground">Hawkeye</span>
+      <span className="text-xl font-bold tracking-tight text-foreground">Hawk3ye</span>
     </span>
   );
 }

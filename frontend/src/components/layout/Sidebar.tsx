@@ -75,12 +75,12 @@ function Brand({ collapsed }: BrandProps) {
         "flex h-14 items-center border-b px-4",
         collapsed ? "justify-center px-0" : "gap-2.5"
       )}
-      aria-label="Hawkeye dashboard home"
+      aria-label="Hawk3ye dashboard home"
     >
       <Logo size={28} />
       {!collapsed && (
         <span className="text-lg font-semibold tracking-tight text-foreground">
-          Hawkeye
+          Hawk3ye
         </span>
       )}
     </NavLink>

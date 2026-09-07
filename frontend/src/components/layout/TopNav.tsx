@@ -506,9 +506,9 @@ export function TopNav({ onMenuClick, sidebarCollapsed }: TopNavProps) {
           </Button>
 
           {/* Brand shown only while the persistent sidebar is hidden */}
-          <NavLink to="/dashboard" className="lg:hidden flex items-center gap-2 flex-shrink-0" aria-label="Hawkeye dashboard">
+          <NavLink to="/dashboard" className="lg:hidden flex items-center gap-2 flex-shrink-0" aria-label="Hawk3ye dashboard">
             <Logo size={22} />
-            <span className="hidden min-[400px]:inline text-base font-semibold tracking-tight text-foreground">Hawkeye</span>
+            <span className="hidden min-[400px]:inline text-base font-semibold tracking-tight text-foreground">Hawk3ye</span>
           </NavLink>
         </div>
 

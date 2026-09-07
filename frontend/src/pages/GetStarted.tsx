@@ -11,7 +11,7 @@ import { useRouteMeta } from "@/hooks/useRouteMeta";
 /**
  * GetStartedPage - the zero-to-live-dashboard journey.
  *
- * Hawkeye authenticates with per-source API keys rather than user accounts;
+ * Hawk3ye authenticates with per-source API keys rather than user accounts;
  * this page walks the honest path: run the backend, register a source,
  * generate a key, send an event, watch detection fire. All commands are
  * real and copyable.
@@ -21,7 +21,7 @@ const steps = [
   {
     icon: Download,
     key: "01",
-    title: "Run Hawkeye",
+    title: "Run Hawk3ye",
     description:
       "Install and start the backend. SQLite works out of the box; point DATABASE_URL at PostgreSQL for production.",
     code: `pip install -e .
@@ -74,7 +74,7 @@ uvicorn hawkeye.main:app --port 8000`,
   {
     icon: Eye,
     key: "05",
-    title: "Watch Hawkeye detect it",
+    title: "Watch Hawk3ye detect it",
     description:
       "Open the dashboard and sign in with the key. Send five failed logins within 15 minutes and the Brute Force engine raises an alert that streams in live.",
     code: `# sign in at /login with hawk_...
@@ -88,7 +88,7 @@ curl http://localhost:8000/api/v1/events?limit=5 \\
 export function GetStartedPage() {
   useRouteMeta(
     "Get started",
-    "Run Hawkeye, register a source, generate an API key, send your first event, and watch detection fire. Five commands from zero to a live dashboard."
+    "Run Hawk3ye, register a source, generate an API key, send your first event, and watch detection fire. Five commands from zero to a live dashboard."
   );
   return (
     <div className="min-h-screen bg-background">
@@ -115,7 +115,7 @@ export function GetStartedPage() {
           From zero to a live detection
         </h1>
         <p className="mt-4 leading-relaxed text-muted-foreground">
-          Hawkeye authenticates with per-source API keys instead of user
+          Hawk3ye authenticates with per-source API keys instead of user
           accounts. Each application you monitor is registered as a source, and
           its keys act as both the ingestion credential and the dashboard login.
           Five steps, five commands:

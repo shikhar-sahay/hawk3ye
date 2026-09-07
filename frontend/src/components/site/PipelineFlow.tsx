@@ -61,7 +61,7 @@ export function PipelineFlow() {
             Five stages between a probe and a resolved incident
           </h2>
           <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            This is the actual path every event takes through Hawkeye. No queue
+            This is the actual path every event takes through Hawk3ye. No queue
             of unprocessed logs: ingestion, detection, and correlation happen
             per event, as it arrives.
           </p>

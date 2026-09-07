@@ -37,11 +37,11 @@ async function initialize(): Promise<void> {
       if (isEnabled) {
         setupBehavioralListeners();
         startPeriodicDetection();
-        console.log("[HawkEye] Bot Detector initialized");
+        console.log("[Hawk3ye] Bot Detector initialized");
       }
     }
   } catch (error) {
-    console.error("[HawkEye] Bot Detector initialization failed:", error);
+    console.error("[Hawk3ye] Bot Detector initialization failed:", error);
   }
 }
 
@@ -513,7 +513,7 @@ async function sendBotDetectionEvent(event: BrowserEvent): Promise<void> {
   try {
     await chrome.runtime.sendMessage({ type: "BOT_DETECTED", payload: event });
   } catch (error) {
-    console.error("[HawkEye] Failed to send bot detection event:", error);
+    console.error("[Hawk3ye] Failed to send bot detection event:", error);
   }
 }
 

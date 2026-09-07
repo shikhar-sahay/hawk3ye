@@ -4,7 +4,7 @@ import { Reveal } from "@/components/Reveal";
 
 const FAQS = [
   {
-    q: "What is Hawkeye?",
+    q: "What is Hawk3ye?",
     a: "A self-hosted security monitoring platform for web applications. You send it security events over a REST API; it normalizes them with MITRE ATT&CK context, scores every event against seven detection engines, correlates related alerts into incidents, and streams everything to a live dashboard.",
   },
   {
@@ -12,7 +12,7 @@ const FAQS = [
     a: "Brute force, credential stuffing, enumeration (404 scanning and injection probes), bot and automation activity, sensitive actions like data exports and key creation, session hijacking across geographies, and API abuse at sustained high request rates. Every alert carries the ATT&CK techniques that fired.",
   },
   {
-    q: "How do events get into Hawkeye?",
+    q: "How do events get into Hawk3ye?",
     a: "Your application POSTs events to /api/v1/events, one at a time or in batches of up to 1,000, authenticated with the API key of the source the events belong to. Events are normalized and ATT&CK-tagged at ingestion, then run through all detection engines.",
   },
   {
@@ -21,12 +21,12 @@ const FAQS = [
   },
   {
     q: "Where is my telemetry stored?",
-    a: "Entirely in your infrastructure. Hawkeye runs on SQLite for evaluation and PostgreSQL for production. No events, alerts, or incidents ever leave your deployment; the dashboard talks to your own backend.",
+    a: "Entirely in your infrastructure. Hawk3ye runs on SQLite for evaluation and PostgreSQL for production. No events, alerts, or incidents ever leave your deployment; the dashboard talks to your own backend.",
   },
 ];
 
 /**
- * FAQSection - five real questions about real Hawkeye behavior,
+ * FAQSection - five real questions about real Hawk3ye behavior,
  * rendered as native disclosure elements.
  */
 export function FAQSection() {

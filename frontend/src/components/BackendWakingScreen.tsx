@@ -11,7 +11,7 @@ import { useBackendReadiness } from "@/context/BackendReadinessContext";
  * BackendWakingScreen - the cold-start UX for Render free-tier wake.
  *
  * Shown while the backend is waking, before any page attempts to fetch
- * authenticated data. It keeps the existing HawkEye design language:
+ * authenticated data. It keeps the existing Hawk3ye design language:
  * HawkLoader mark, restrained copy, and the same motion rules.
  */
 export function BackendWakingScreen() {
@@ -44,7 +44,7 @@ export function BackendWakingScreen() {
         {/* Copy */}
         <div className="max-w-sm space-y-2">
           <h2 className="text-base font-semibold tracking-tight text-foreground">
-            {isFailed ? "HawkEye is taking longer than expected" : "HawkEye is waking up"}
+            {isFailed ? "Hawk3ye is taking longer than expected" : "Hawk3ye is waking up"}
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             {isFailed

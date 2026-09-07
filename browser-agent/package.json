@@ -2,7 +2,7 @@
   "name": "hawkeye-browser-agent",
   "version": "0.1.0",
   "private": true,
-  "description": "HawkEye Browser Security Agent - Chrome MV3 Extension",
+  "description": "Hawk3ye Browser Security Agent - Chrome MV3 Extension",
   "type": "module",
   "scripts": {
     "dev": "vite build --watch",
