@@ -552,23 +552,24 @@ export function SettingsPage() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button
-                      className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between p-3 bg-muted/30 rounded-lg text-muted-foreground cursor-not-allowed"
-                      disabled
-                      aria-disabled="true"
+                    <a
+                      href="https://github.com/shikhar-sahay/hawk3ye"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between p-3 bg-muted/30 rounded-lg text-muted-foreground hover:text-foreground"
                     >
                       <div className="flex items-center gap-3">
                         <GitBranch className="h-5 w-5 text-muted-foreground" />
                         <div>
                           <p className="font-medium">GitHub Repository</p>
-                          <p className="text-sm text-muted-foreground">Source code and issues (coming soon)</p>
+                          <p className="text-sm text-muted-foreground">Source code and issues</p>
                         </div>
                       </div>
                       <ExternalLink className="h-4 w-4 text-muted-foreground opacity-50" />
-                    </button>
+                    </a>
                   </TooltipTrigger>
                   <TooltipContent side="right">
-                    <p>Not yet available (placeholder for future GitHub repo)</p>
+                    <p>Open the Hawk3ye repository on GitHub</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

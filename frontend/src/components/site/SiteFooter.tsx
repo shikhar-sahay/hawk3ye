@@ -57,7 +57,7 @@ export function SiteFooter() {
             </li>
             <li>
               <a
-                href="https://github.com/shikhar-sahay/hawkeye"
+                href="https://github.com/shikhar-sahay/hawk3ye"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex min-h-[36px] items-center gap-1 text-muted-foreground hover:text-foreground"

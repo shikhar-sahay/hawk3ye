@@ -80,8 +80,8 @@ Alerts, Incidents, Sources, Settings) or directly through the REST API.
 ### 2.2 Clone and install the backend
 
 ```bash
-git clone https://github.com/shikhar-sahay/hawkeye.git
-cd hawkeye
+git clone https://github.com/shikhar-sahay/hawk3ye.git
+cd hawk3ye
 pip install -e ".[dev]"
 ```
 
