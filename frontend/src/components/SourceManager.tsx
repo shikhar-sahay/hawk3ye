@@ -68,7 +68,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { cn, formatRelativeTime } from "@/lib/utils";
+import { cn, formatRelativeTime, copyTextToClipboard } from "@/lib/utils";
 import { apiClient, queryKeys } from "@/api/client";
 import type { Source, SourceCreate, SourceUpdate, ApiKey, ApiKeyCreate, SourceListResponse } from "@/types";
 import { useToast } from "@/hooks/use-toast";
@@ -275,10 +275,14 @@ export function SourceManager() {
   };
 
   // Handle API key copy
-  const handleCopyApiKey = (key: string, keyId: number) => {
-    navigator.clipboard.writeText(key);
-    setCopyFeedback(keyId);
-    setTimeout(() => setCopyFeedback(null), 2000);
+  const handleCopyApiKey = async (key: string, keyId: number) => {
+    const ok = await copyTextToClipboard(key);
+    if (ok) {
+      setCopyFeedback(keyId);
+      setTimeout(() => setCopyFeedback(null), 2000);
+    } else {
+      toast({ title: "Copy failed", description: "Could not copy to clipboard.", variant: "destructive" });
+    }
   };
 
   // Handle create source form submit
@@ -663,10 +667,14 @@ export function SourceManager() {
                   <AlertDialogFooter>
                     <Button
                       variant="outline"
-                      onClick={() => {
-                        navigator.clipboard.writeText(showNewKey);
-                        setCopyFeedback(-1);
-                        setTimeout(() => setCopyFeedback(null), 2000);
+                      onClick={async () => {
+                        const ok = await copyTextToClipboard(showNewKey);
+                        if (ok) {
+                          setCopyFeedback(-1);
+                          setTimeout(() => setCopyFeedback(null), 2000);
+                        } else {
+                          toast({ title: "Copy failed", description: "Could not copy to clipboard.", variant: "destructive" });
+                        }
                       }}
                     >
                       <Copy className="h-4 w-4 mr-2" />

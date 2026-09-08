@@ -334,9 +334,9 @@ export function EventsPage() {
                   <SelectContent>
                     <SelectItem value="all">All Event Types</SelectItem>
                     <SelectItem value="login_success">Login Success</SelectItem>
-                    <SelectItem value="login_failure">Login Failure</SelectItem>
+                    <SelectItem value="login_failed">Login Failure</SelectItem>
                     <SelectItem value="logout">Logout</SelectItem>
-                    <SelectItem value="access_denied">Access Denied</SelectItem>
+                    <SelectItem value="permission_denied">Access Denied</SelectItem>
                     <SelectItem value="privilege_escalation">Privilege Escalation</SelectItem>
                     <SelectItem value="port_scan">Port Scan</SelectItem>
                     <SelectItem value="api_abuse">API Abuse</SelectItem>

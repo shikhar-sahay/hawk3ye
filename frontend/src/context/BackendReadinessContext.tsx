@@ -45,6 +45,12 @@ export function BackendReadinessProvider({ children }: { children: React.ReactNo
   const startedAtRef = React.useRef<number>(Date.now());
   const abortedRef = React.useRef(false);
   const retryQueuedRef = React.useRef(false);
+  // Ref mirrors so callbacks (e.g. the visibility handler) never read stale
+  // state. readyRef stays true once a 200 is observed: after the first
+  // success, transient blips are handled by per-query error states and the
+  // WebSocket reconnect logic, not by re-entering the waking flow.
+  const attemptsRef = React.useRef(0);
+  const readyRef = React.useRef(false);
 
   const check = React.useCallback(async (attempt: number) => {
     if (abortedRef.current) return;
@@ -60,6 +66,8 @@ export function BackendReadinessProvider({ children }: { children: React.ReactNo
       if (res.ok) {
         setStatus("ready");
         setAttempts(0);
+        attemptsRef.current = 0;
+        readyRef.current = true;
         startedAtRef.current = Date.now();
         return true;
       }
@@ -70,11 +78,14 @@ export function BackendReadinessProvider({ children }: { children: React.ReactNo
       // response (not waking) so we do not mask real config errors.
       setStatus("ready");
       setAttempts(0);
+      attemptsRef.current = 0;
+      readyRef.current = true;
       return true;
     } catch {
       clearTimeout(timeout);
       const nextAttempt = attempt + 1;
       setAttempts(nextAttempt);
+      attemptsRef.current = nextAttempt;
       const elapsed = Date.now() - startedAtRef.current;
       if (elapsed >= FAILED_AFTER_MS) {
         setStatus("failed");
@@ -113,11 +124,15 @@ export function BackendReadinessProvider({ children }: { children: React.ReactNo
       if (!ok && !cancelled) cleanup = scheduleNext(1);
     })();
 
-    // Re-check when the tab becomes visible again (user returns after sleep)
+    // Re-check when the tab becomes visible again (user returns after sleep).
+    // Skip once ready: a transient blip must not drag the app back into the
+    // waking flow (which would also tear down the live WebSocket with no
+    // recovery loop running). Post-ready failures surface through per-query
+    // error states and the socket reconnect logic instead.
     const onVisible = () => {
-      if (document.visibilityState === "visible" && !abortedRef.current) {
-        void check(attempts);
-      }
+      if (document.visibilityState !== "visible") return;
+      if (abortedRef.current || readyRef.current) return;
+      void check(attemptsRef.current);
     };
     document.addEventListener("visibilitychange", onVisible);
 
@@ -141,6 +156,7 @@ export function BackendReadinessProvider({ children }: { children: React.ReactNo
       retryQueuedRef.current = false;
       startedAtRef.current = Date.now();
       setAttempts(0);
+      attemptsRef.current = 0;
       setStatus("checking");
       void check(0).then((ok) => {
         if (!ok) scheduleNext(1);

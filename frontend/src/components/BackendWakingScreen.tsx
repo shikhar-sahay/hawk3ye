@@ -53,7 +53,7 @@ export function BackendWakingScreen() {
           </p>
           {!isFailed && attempts > 0 && (
             <p className="font-mono text-2xs text-muted-foreground/70">
-              checking{".".repeat(Math.min(attempts, 4))}
+              Checking backend status...
             </p>
           )}
         </div>

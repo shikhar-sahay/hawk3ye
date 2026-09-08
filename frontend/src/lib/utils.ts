@@ -73,7 +73,7 @@ export function getDetectionTypeLabel(type: string): string {
     brute_force: 'Brute Force',
     credential_stuffing: 'Credential Stuffing',
     enumeration: 'Enumeration',
-    bot: 'Bot Activity',
+    bot_detection: 'Bot Activity',
     sensitive_action: 'Sensitive Action',
     session_hijacking: 'Session Hijacking',
     api_abuse: 'API Abuse',
@@ -161,4 +161,31 @@ export function formatTimestamp(date: Date | string): string {
     second: '2-digit',
     hour12: false,
   })
+}
+
+/**
+ * Copy text to the clipboard, with a fallback for contexts where the
+ * async Clipboard API is unavailable or denied (e.g. non-secure origins).
+ * Resolves true when the text was copied, false otherwise.
+ */
+export async function copyTextToClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch {
+    // Fall back to a temporary textarea + execCommand
+    try {
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.position = 'fixed'
+      ta.style.opacity = '0'
+      document.body.appendChild(ta)
+      ta.select()
+      const ok = document.execCommand('copy')
+      document.body.removeChild(ta)
+      return ok
+    } catch {
+      return false
+    }
+  }
 }

@@ -52,6 +52,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { apiClient } from "@/api/client";
 import { clearStoredApiKey } from "@/auth";
+import { copyTextToClipboard } from "@/lib/utils";
 import { useWebSocketContext, useConnectionStatusWithInit } from "@/context/WebSocketContext";
 
 const APP_VERSION = "2.0.0";
@@ -150,10 +151,12 @@ export function SettingsPage() {
   };
 
   // Copy API key to clipboard
-  const copyApiKey = () => {
+  const copyApiKey = async () => {
     if (storedApiKey) {
-      navigator.clipboard.writeText(storedApiKey);
-      toast({ title: "Copied", description: "API key copied to clipboard." });
+      const ok = await copyTextToClipboard(storedApiKey);
+      toast(ok
+        ? { title: "Copied", description: "API key copied to clipboard." }
+        : { title: "Copy failed", description: "Could not copy to clipboard.", variant: "destructive" });
     }
   };
 

@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - Responsive and functionality QA pass
+
+### Fixed
+- Waking screen copy: the `checking....` progress line is now
+  `Checking backend status...`.
+- Get Started step 5 example used `GET /api/v1/events?limit=5`, which has no
+  route (405). It now uses `GET /api/v1/events/query?limit=5`.
+- Events page type filter offered `login_failure` and `access_denied`, which
+  match nothing in the v2 vocabulary. They are now `login_failed` and
+  `permission_denied` (labels unchanged).
+- Alert and incident detail views showed the raw `bot_detection` label for
+  bot alerts. The shared detection-type label map now covers the backend
+  `bot_detection` value (`Bot Activity`).
+- Clipboard copies in Sources (key prefix, new-key dialog) and Settings
+  showed success feedback even when the Clipboard API was unavailable and
+  could throw unhandled rejections. All three now share a
+  `copyTextToClipboard` helper with textarea fallback and failure toasts.
+- Backend-readiness tab-visibility re-check used a stale attempt count and,
+  after the first success, could leave readiness stuck at `waking` with the
+  live WebSocket torn down and no recovery loop running. Visibility checks
+  now use ref mirrors and are skipped once ready (post-ready blips stay with
+  per-query error states and socket reconnect, as designed).
+
+### Verified
+- Backend suite 47/47 pass; frontend ESLint 0 errors; `tsc` plus production
+  Vite build pass.
+
+---
+
 ## [Unreleased] - Hawk3ye production deployment (Vercel + Render + Neon) (2026-09-07)
 
 ### Deployed

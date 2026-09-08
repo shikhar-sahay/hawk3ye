@@ -79,7 +79,7 @@ uvicorn hawkeye.main:app --port 8000`,
       "Open the dashboard and sign in with the key. Send five failed logins within 15 minutes and the Brute Force engine raises an alert that streams in live.",
     code: `# sign in at /login with hawk_...
 # or watch the event land:
-curl http://localhost:8000/api/v1/events?limit=5 \\
+curl http://localhost:8000/api/v1/events/query?limit=5 \\
   -H "X-API-Key: hawk_..."`,
     meta: "detection → alert → incident, all on your dashboard",
   },
