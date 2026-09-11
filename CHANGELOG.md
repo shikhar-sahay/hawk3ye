@@ -23,13 +23,12 @@ All notable changes to this project will be documented in this file.
   theme menu (Light/Deep Blue/Pitch Black), mobile drawer nav, FAQ
   accordion, and copy-to-clipboard feedback all work.
 
-### Known production finding (not changed from here)
-- Production serves `/docs` (Swagger UI), which means `ENVIRONMENT` is not
-  set to `production` on the Render service despite `render.yaml`
-  declaring it. Until that env var is set on the service, the docs stay
-  public and ingestion 500s keep dev-level detail. Set
-  `ENVIRONMENT=production` (and `DEBUG=false`) on the Render service; no
-  code change needed.
+### Production environment (verified 2026-09-11)
+- `ENVIRONMENT=production` is now set on the Render service (it was missing
+  despite `render.yaml` declaring it, which had left `/docs` public).
+  Verified live: `/health` returns healthy after wake and `/docs` returns
+  404. Docs stay disabled, ingestion 500s stay sanitized, and the seed
+  guard is armed. No code change was needed.
 
 ---
 
