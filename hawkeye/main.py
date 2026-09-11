@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
-    description="AI-powered Web Application Security Monitoring Platform",
+    description="Web Application Security Monitoring Platform",
     lifespan=lifespan,
     docs_url="/docs" if settings.environment != "production" else None,
     redoc_url="/redoc" if settings.environment != "production" else None,
