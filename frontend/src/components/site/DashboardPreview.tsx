@@ -44,7 +44,7 @@ export function DashboardPreview() {
             <p className="mt-3 leading-relaxed text-muted-foreground">
               Alerts stream in live over WebSocket. Incidents group the related
               signals, carry their ATT&CK context, and wait for your triage. Update
-              update status as you investigate, from open to resolved.
+              status as you investigate, from open to resolved.
             </p>
             <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">

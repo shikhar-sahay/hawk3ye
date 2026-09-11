@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - Product acceptance QA
+
+### Fixed
+- Landing page copy: removed a duplicated word ("Update update status" now
+  reads "Update status as you investigate").
+
+### Verified live in production (no credentials touched, no data written)
+- Backend cold-start recovery: `/health` 503 while asleep, then `healthy`
+  after the frontend wake polling, with the login form usable and no manual
+  refresh.
+- Login invalid-key flow: useful `Invalid or inactive API key` error with
+  `aria-invalid` input and `role=alert` message; no stale error on revisit.
+- Protected routes (`/dashboard`, `/sources`) redirect to `/login` without a
+  key.
+- Public pages (`/`, `/get-started`, 404) render at 320/390/720/768/844x390/
+  1440/2560 px with no horizontal overflow; light mode screenshot-verified;
+  theme menu (Light/Deep Blue/Pitch Black), mobile drawer nav, FAQ
+  accordion, and copy-to-clipboard feedback all work.
+
+### Known production finding (not changed from here)
+- Production serves `/docs` (Swagger UI), which means `ENVIRONMENT` is not
+  set to `production` on the Render service despite `render.yaml`
+  declaring it. Until that env var is set on the service, the docs stay
+  public and ingestion 500s keep dev-level detail. Set
+  `ENVIRONMENT=production` (and `DEBUG=false`) on the Render service; no
+  code change needed.
+
+---
+
 ## [Unreleased] - Responsive and functionality QA pass
 
 ### Fixed
